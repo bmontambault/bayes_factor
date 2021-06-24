@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from scipy import stats as st
 from rpy2.robjects import Formula
 from rpy2.robjects.packages import importr
 from rpy2.robjects import numpy2ri, pandas2ri
