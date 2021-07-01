@@ -48,9 +48,11 @@ class BayesFactor(object):
         bf = res.slots['bayesFactor']['bf'][x_field]
         return bf
 
-    def bayes_factor(self, data, x_field, y_field):
+    def bayes_factor(self, data, x_field, y_field, verbose=False):            
         x_type = self.dtypes[x_field]
         y_type = self.dtypes[y_field]
+        if verbose:
+            print(x_type, y_type)
         if y_type == 'numeric':
             if x_type == 'binary':
                 return self.ttest(data, x_field, y_field)
