@@ -16,7 +16,11 @@ def set_column_names(data, dtype, columns):
     columns = [f'{dtype}_{i}' for i in range(next_column, columns+next_column)] if type(columns) == int else columns
     return columns
 
-def sample(new_data, data, dtypes, mask, new_dtype, columns, column_names):
+def sample(new_data, data, dtypes, mask, new_dtype, columns, column_names=None):
+    if column_names is None:
+        column_names = set_column_names(new_data, new_dtype, columns)
+    new_data.columns = column_names
+
     if dtypes is None:
         dtypes = {col: new_dtype for col in new_data.columns}
     else:
@@ -28,10 +32,6 @@ def sample(new_data, data, dtypes, mask, new_dtype, columns, column_names):
         data.loc[mask, new_data.columns] = new_data.loc[mask]
     else:
         data = pd.concat([data, new_data], axis=1)
-
-    if column_names is None:
-        column_names = set_column_names(data, new_dtype, columns)
-    data.columns = column_names
     return data, dtypes
 
 def sample_binary(p, rows, columns, data=None, dtypes=None, mask=None, column_names=None):
@@ -39,8 +39,10 @@ def sample_binary(p, rows, columns, data=None, dtypes=None, mask=None, column_na
     data, dtypes = sample(new_data, data, dtypes, mask, 'binary', columns, column_names)
     return data, dtypes
 
-def sample_nominal(p, rows, columns, data=None, dtypes=None, mask=None, column_names=None):
-    new_data = pd.DataFrame(np.random.choice(np.arange(len(p)), p=p, size=(rows, columns if type(columns) == int else len(columns)))).astype(int).astype(str)
+def sample_nominal(p, rows, columns, data=None, dtypes=None, mask=None, column_names=None, factor_names=None):
+    if factor_names is None:
+        factor_names = np.arange(len(p))
+    new_data = pd.DataFrame(np.random.choice(factor_names, p=p, size=(rows, columns if type(columns) == int else len(columns)))).astype(int).astype(str)
     data, dtypes = sample(new_data, data, dtypes, mask, 'nominal', columns, column_names)
     return data, dtypes
 
