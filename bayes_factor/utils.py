@@ -16,7 +16,7 @@ def set_column_names(data, dtype, columns):
     columns = [f'{dtype}_{i}' for i in range(next_column, columns+next_column)] if type(columns) == int else columns
     return columns
 
-def sample(new_data, data, dtypes, mask, new_dtype):
+def sample(new_data, data, dtypes, mask, new_dtype, columns, column_names):
     if dtypes is None:
         dtypes = {col: new_dtype for col in new_data.columns}
     else:
@@ -28,32 +28,32 @@ def sample(new_data, data, dtypes, mask, new_dtype):
         data.loc[mask, new_data.columns] = new_data.loc[mask]
     else:
         data = pd.concat([data, new_data], axis=1)
+
+    if column_names is None:
+        column_names = set_column_names(data, new_dtype, columns)
+    data.columns = column_names
     return data, dtypes
 
-def sample_binary(p, rows, columns, data=None, dtypes=None, mask=None):
+def sample_binary(p, rows, columns, data=None, dtypes=None, mask=None, column_names=None):
     new_data = pd.DataFrame(np.random.binomial(1, p, size=(rows, columns if type(columns) == int else len(columns))))
-    new_data.columns = set_column_names(data, 'binary', columns)
-    data, dtypes = sample(new_data, data, dtypes, mask, 'binary')
+    data, dtypes = sample(new_data, data, dtypes, mask, 'binary', columns, column_names)
     return data, dtypes
 
-def sample_nominal(p, rows, columns, data=None, dtypes=None, mask=None):
+def sample_nominal(p, rows, columns, data=None, dtypes=None, mask=None, column_names=None):
     new_data = pd.DataFrame(np.random.choice(np.arange(len(p)), p=p, size=(rows, columns if type(columns) == int else len(columns)))).astype(int).astype(str)
-    new_data.columns = set_column_names(data, 'nominal', columns)
-    data, dtypes = sample(new_data, data, dtypes, mask, 'nominal')
+    data, dtypes = sample(new_data, data, dtypes, mask, 'nominal', columns, column_names)
     return data, dtypes
 
-def sample_ordinal(p, rows, columns, data=None, dtypes=None, mask=None):
+def sample_ordinal(p, rows, columns, data=None, dtypes=None, mask=None, column_names=None):
     new_data = pd.DataFrame(np.random.choice(np.arange(len(p)), p=p, size=(rows, columns if type(columns) == int else len(columns))))
-    new_data.columns = set_column_names(data, 'ordinal', columns)
-    data, dtypes = sample(new_data, data, dtypes, mask, 'ordinal')
+    data, dtypes = sample(new_data, data, dtypes, mask, 'ordinal', columns, column_names)
     return data, dtypes
 
-def sample_numeric(mean, std, rows, columns, data=None, dtypes=None, mask=None, regressor_col=None, slope=0):
+def sample_numeric(mean, std, rows, columns, data=None, dtypes=None, mask=None, regressor_col=None, slope=0, column_names=None):
     if regressor_col is not None and data is not None:
         y = (data[regressor_col] * slope)[:,None]
     else:
         y = 0
     new_data = pd.DataFrame(np.random.normal(mean, std, size=(rows, columns if type(columns) == int else len(columns))) + y)
-    new_data.columns = set_column_names(data, 'numeric', columns)
-    data, dtypes = sample(new_data, data, dtypes, mask, 'numeric')
+    data, dtypes = sample(new_data, data, dtypes, mask, 'numeric', columns, column_names)
     return data, dtypes
