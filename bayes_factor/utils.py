@@ -20,12 +20,12 @@ def sample(new_data, data, dtypes, mask, new_dtype, columns, column_names=None):
     if column_names is None:
         column_names = set_column_names(new_data, new_dtype, columns)
     new_data.columns = column_names
-
     if dtypes is None:
         dtypes = {col: new_dtype for col in new_data.columns}
     else:
         for col in new_data.columns:
             dtypes[col] = new_dtype
+
     if data is None:
         data = new_data
     elif mask is not None:
@@ -51,11 +51,15 @@ def sample_ordinal(p, rows, columns, data=None, dtypes=None, mask=None, column_n
     data, dtypes = sample(new_data, data, dtypes, mask, 'ordinal', columns, column_names)
     return data, dtypes
 
-def sample_numeric(mean, std, rows, columns, data=None, dtypes=None, mask=None, regressor_col=None, slope=0, column_names=None):
+def sample_numeric(mean, std, rows, columns, data=None, dtypes=None, mask=None, regressor_col=None, slope=0, column_names=None, log=False):
     if regressor_col is not None and data is not None:
         y = (data[regressor_col] * slope)[:,None]
     else:
         y = 0
-    new_data = pd.DataFrame(np.random.normal(mean, std, size=(rows, columns if type(columns) == int else len(columns))) + y)
+    if log:
+        r = np.random.lognormal
+    else:
+        r = np.random.normal
+    new_data = pd.DataFrame(r(mean, std, size=(rows, columns if type(columns) == int else len(columns))) + y)
     data, dtypes = sample(new_data, data, dtypes, mask, 'numeric', columns, column_names)
     return data, dtypes
