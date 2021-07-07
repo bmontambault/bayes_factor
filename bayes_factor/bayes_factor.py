@@ -27,7 +27,8 @@ class BayesFactor(object):
         rpy2.rinterface_lib.callbacks.consolewrite_warnerror = add_to_stderr
 
     def ttest(self, data, y_field=None, x_field=None, mask=None):
-        mask = data[x_field].astype(bool)
+        if mask is None:
+            mask = data[x_field].astype(bool)
         res = RBayesFactor.ttestBF(x=data.loc[mask][y_field].values, y=data.loc[~mask][y_field].values)
         bf = res.slots['bayesFactor']['bf'][0]
         return bf
@@ -54,6 +55,8 @@ class BayesFactor(object):
         else:
             x_type = self.dtypes[x_field]
         y_type = self.dtypes[y_field]
+        if verbose:
+            print(x_type, y_type)
         if y_type == 'numeric':
             if x_type is None:
                 return self.ttest(data, y_field=y_field, mask=mask)

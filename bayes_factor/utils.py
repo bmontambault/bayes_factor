@@ -12,7 +12,8 @@ def get_next_column_dtype(data, dtype):
             return 0
 
 def set_column_names(data, dtype, columns):
-    next_column = get_next_column_dtype(data, dtype)
+    # next_column = get_next_column_dtype(data, dtype)
+    next_column = 0
     columns = [f'{dtype}_{i}' for i in range(next_column, columns+next_column)] if type(columns) == int else columns
     return columns
 
