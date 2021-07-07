@@ -26,13 +26,13 @@ class BayesFactor(object):
         rpy2.rinterface_lib.callbacks.consolewrite_print     = add_to_stdout
         rpy2.rinterface_lib.callbacks.consolewrite_warnerror = add_to_stderr
 
-    def ttest(self, data, x_field, y_field):
+    def ttest(self, data, y_field=None, x_field=None, mask=None):
         mask = data[x_field].astype(bool)
         res = RBayesFactor.ttestBF(x=data.loc[mask][y_field].values, y=data.loc[~mask][y_field].values)
         bf = res.slots['bayesFactor']['bf'][0]
         return bf
 
-    def anova(self, data, x_field, y_field):
+    def anova(self, data, y_field, x_field):
         rdata = pandas2ri.DataFrame(data[[x_field, y_field]])
         x_col = robjects.vectors.FactorVector(rdata.rx2(x_field))
         x_col_index = list(rdata.colnames).index(x_field)
@@ -42,21 +42,24 @@ class BayesFactor(object):
         bf = res.slots['bayesFactor']['bf'][x_field]
         return bf
 
-    def regression(self, data, x_field, y_field):
+    def regression(self, data, y_field, x_field):
         formula = Formula(f"{y_field} ~ {x_field}")
         res = RBayesFactor.regressionBF(formula=formula, data=data)
         bf = res.slots['bayesFactor']['bf'][x_field]
         return bf
 
-    def bayes_factor(self, data, x_field, y_field, verbose=False):            
-        x_type = self.dtypes[x_field]
+    def bayes_factor(self, data, y_field, x_field=None, mask=None, verbose=False):
+        if x_field is None:            
+            x_type = None
+        else:
+            x_type = self.dtypes[x_field]
         y_type = self.dtypes[y_field]
-        if verbose:
-            print(x_type, y_type)
         if y_type == 'numeric':
-            if x_type == 'binary':
-                return self.ttest(data, x_field, y_field)
+            if x_type is None:
+                return self.ttest(data, y_field=y_field, mask=mask)
+            elif x_type == 'binary':
+                return self.ttest(data[mask], x_field, y_field)
             elif x_type == 'nominal':
-                return self.anova(data, x_field, y_field)
+                return self.anova(data[mask], x_field, y_field)
             elif x_type in ['ordinal', 'numeric']:
-                return self.regression(data, x_field, y_field)
+                return self.regression(data[mask], x_field, y_field)
