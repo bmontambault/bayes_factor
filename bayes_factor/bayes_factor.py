@@ -29,6 +29,8 @@ class BayesFactor(object):
     def ttest(self, data, y_field=None, x_field=None, mask=None):
         if mask is None:
             mask = data[x_field].astype(bool)
+        if mask.sum() <= 1 or (~mask).sum() <= 1:
+            return 0
         res = RBayesFactor.ttestBF(x=data.loc[mask][y_field].values, y=data.loc[~mask][y_field].values)
         bf = res.slots['bayesFactor']['bf'][0]
         return bf
