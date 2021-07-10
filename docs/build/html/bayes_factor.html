@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Documentation &mdash; Bayes Factor 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Bayes Factor’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Bayes Factor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bayesfactor"><code class="docutils literal notranslate"><span class="pre">BayesFactor</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Bayes Factor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/bayes_factor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="bayesfactor">
+<h2><code class="docutils literal notranslate"><span class="pre">BayesFactor</span></code><a class="headerlink" href="#bayesfactor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="bayes_factor.BayesFactor">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bayes_factor.</span></span><span class="sig-name descname"><span class="pre">BayesFactor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtypes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bayes_factor.BayesFactor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is the class used to calculate all bayes factors. In addition to methods for running each available test,
+this class also included a method for automatically infering the correct test to run based on data types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtypes</strong> (<em>dict</em>) – Data types for each column in the dataset</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bayes_factor.BayesFactor.ttest">
+<span class="sig-name descname"><span class="pre">ttest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bayes_factor.BayesFactor.ttest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Bayes factor for a t-test run on a given data frame for defined x and y columns. The column
+designated as the x should be able to be cast as a boolean indicating the two groups in a independent-sample
+t-test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – The dataset</p></li>
+<li><p><strong>y_field</strong> (<em>str</em>) – Column in the dataset whose means will be compared between groups</p></li>
+<li><p><strong>x_field</strong> (<em>str</em>) – Column in the dataset that will be used to distinguish between groups</p></li>
+<li><p><strong>mask</strong> (<em>np.array</em><em>, </em><em>pd.Series</em>) – Boolean array of length data.shape[0] that will be used to distinguish between groups if x_field is set to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bayes factor</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bayes_factor.BayesFactor.anova">
+<span class="sig-name descname"><span class="pre">anova</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_field</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bayes_factor.BayesFactor.anova" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Bayes factor for an ANOVA test run on a given data frame for defined x and y columns. Each unique value 
+in the column designated as x will indicate a group in a one-way ANOVA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – The dataset</p></li>
+<li><p><strong>y_field</strong> (<em>str</em>) – Column in the dataset whose means will be compared between groups</p></li>
+<li><p><strong>x_field</strong> (<em>str</em>) – Column in the dataset that will be used to distinguish between groups</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bayes factor</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bayes_factor.BayesFactor.regression">
+<span class="sig-name descname"><span class="pre">regression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_field</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bayes_factor.BayesFactor.regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Bayes factor for a regression test run on a given data frame for defined x and y columns. The x column and
+y column indicate the indepedent and dependent variable respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – The dataset</p></li>
+<li><p><strong>y_field</strong> (<em>str</em>) – Column in the dataset that will be used as the dependent variable</p></li>
+<li><p><strong>x_field</strong> (<em>str</em>) – Column in the dataset that will be used as the independent variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bayes factor</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bayes_factor.BayesFactor.bayes_factor">
+<span class="sig-name descname"><span class="pre">bayes_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bayes_factor.BayesFactor.bayes_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Bayes factor for a test determined by the data types of the given x and y columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – The dataset</p></li>
+<li><p><strong>y_field</strong> (<em>str</em>) – Column in the dataset that will be used to distinguish between groups or as the dependent variable</p></li>
+<li><p><strong>x_field</strong> (<em>str</em>) – Column in the dataset that will be used to compare means or as the independent variable</p></li>
+<li><p><strong>mask</strong> (<em>np.array</em><em>, </em><em>pd.Series</em>) – Boolean array of length data.shape[0] that will be used to distinguish between groups if x_field is set to None</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Option to print messages</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bayes factor</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Bayes Factor’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, bmontambault.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
