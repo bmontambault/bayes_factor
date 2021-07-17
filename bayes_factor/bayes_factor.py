@@ -138,3 +138,8 @@ class BayesFactor(object):
                 return self.anova(data[mask], x_field, y_field)
             elif x_type in ['ordinal', 'numeric']:
                 return self.regression(data[mask], x_field, y_field)
+        elif y_type == 'binary':
+            if x_type is None:
+                return self.ttest(data, y_field=y_field, mask=mask)
+            elif x_type == 'binary':
+                return self.ttest(data[mask], x_field, y_field)
