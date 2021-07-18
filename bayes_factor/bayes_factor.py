@@ -38,7 +38,7 @@ class BayesFactor(object):
         rpy2.rinterface_lib.callbacks.consolewrite_print     = add_to_stdout
         rpy2.rinterface_lib.callbacks.consolewrite_warnerror = add_to_stderr
 
-    def ttest(self, data, y_field, x_field=None, mask=None):
+    def ttest(self, data, y_field, x_field=None, mask=None, side=None):
         """Returns the Bayes factor for a t-test run on a given data frame for defined x and y columns. The column
         designated as the x should be able to be cast as a boolean indicating the two groups in a independent-sample
         t-test.
@@ -59,7 +59,56 @@ class BayesFactor(object):
             mask = data[x_field].astype(bool)
         if mask.sum() <= 1 or (~mask).sum() <= 1:
             return 0
-        res = RBayesFactor.ttestBF(x=data.loc[mask][y_field].values, y=data.loc[~mask][y_field].values)
+        x_sample = data.loc[mask][y_field].values
+        y_sample = data.loc[~mask][y_field].values
+        x_mean = x_sample.mean()
+        y_mean = y_sample.mean()
+        if side is not None:
+            if side == 'left':
+                if y_mean > x_mean:
+                    return 0
+            elif side == 'right':
+                if x_mean > y_mean:
+                    return 0
+
+        res = RBayesFactor.ttestBF(x=x_sample, y=y_sample)
+        bf = res.slots['bayesFactor']['bf'][0]
+        return bf
+
+    def proportion(self, data, y_field, x_field=None, mask=None, side=None):
+        """Returns the Bayes factor for a t-test run on a given data frame for defined x and y columns. The column
+        designated as the x should be able to be cast as a boolean indicating the two groups in a independent-sample
+        t-test.
+
+        :param data: The dataset
+        :type data: pd.DataFrame
+        :param y_field: Column in the dataset whose means will be compared between groups
+        :type y_field: str
+        :param x_field: Column in the dataset that will be used to distinguish between groups
+        :type x_field: str
+        :param mask: Boolean array of length data.shape[0] that will be used to distinguish between groups if x_field is set to None
+        :type mask: np.array, pd.Series
+        :return: Bayes factor
+        :rtype: float
+        """
+
+        if mask is None:
+            mask = data[x_field].astype(bool)
+        if mask.sum() <= 1 or (~mask).sum() <= 1:
+            return 0
+        x_sample = data.loc[mask][y_field].values
+        y_sample = data.loc[~mask][y_field].values
+        x_mean = x_sample.mean()
+        y_mean = y_sample.mean()
+        if side is not None:
+            if side == 'left':
+                if y_mean > x_mean:
+                    return 0
+            elif side == 'right':
+                if x_mean > y_mean:
+                    return 0
+        
+        res = RBayesFactor.proportionBF(x_sample.sum(), mask.sum(), p=y_mean)
         bf = res.slots['bayesFactor']['bf'][0]
         return bf
 
@@ -105,7 +154,7 @@ class BayesFactor(object):
         bf = res.slots['bayesFactor']['bf'][x_field]
         return bf
 
-    def bayes_factor(self, data, y_field, x_field=None, mask=None, verbose=False):
+    def bayes_factor(self, data, y_field, x_field=None, mask=None, side=None, verbose=False):
         """Returns the Bayes factor for a test determined by the data types of the given x and y columns.
 
         :param data: The dataset
@@ -131,15 +180,15 @@ class BayesFactor(object):
             print(x_type, y_type)
         if y_type == 'numeric':
             if x_type is None:
-                return self.ttest(data, y_field=y_field, mask=mask)
+                return self.ttest(data, y_field=y_field, mask=mask, side=side)
             elif x_type == 'binary':
-                return self.ttest(data[mask], x_field, y_field)
+                return self.ttest(data[mask], x_field, y_field, side=side)
             elif x_type == 'nominal':
                 return self.anova(data[mask], x_field, y_field)
             elif x_type in ['ordinal', 'numeric']:
                 return self.regression(data[mask], x_field, y_field)
         elif y_type == 'binary':
             if x_type is None:
-                return self.ttest(data, y_field=y_field, mask=mask)
+                return self.proportion(data, y_field=y_field, mask=mask, side=side)
             elif x_type == 'binary':
-                return self.ttest(data[mask], x_field, y_field)
+                return self.proportion(data[mask], x_field, y_field, side=side)
